@@ -51,7 +51,9 @@
      (for [item items]
        [:tr
         [:td [:a {:href (:link item)}
-              (:title item)]]
+              (:title item)]
+         (for [tag (:tags item)]
+           [:span {:style "background: silver; margin: 4px; border-radius: 4px"} (str tag)])]
         ]
        )]
     ]])
