@@ -63,7 +63,9 @@
       "https://hang.hu/feed/"
       "https://kolozsvaros.com/feed/"
       "https://www.napi.hu/feed/mindencikk.xml"
-      "https://www.portfolio.hu/rss/all.xml"]
+      "https://www.portfolio.hu/rss/all.xml"
+      "https://magyarnarancs.hu/rss/"
+      ]
      (pmap fetch-items)
      (flatten)
      (template)
