@@ -3,6 +3,8 @@
          '[babashka.curl :as curl]
          )
 
+(def tag-blacklist #{"_444_adomany"})
+
 (defn rss-item [item]
   (let [title (some #(when (= :title (:tag %)) (first (:content %)))
                     (:content item))
@@ -12,7 +14,7 @@
                           (:content item))]
     {:title title
      :link url
-     :tags (vec categories)}))
+     :tags (vec (remove tag-blacklist categories))}))
 
 (defn fetch-items [url]
   (->
@@ -54,6 +56,9 @@
 
 (defn template [items]
   [:html
+   [:head
+    [:title "hirek."]
+    [:style "i {font-size: 0.9em; color: #222}"]]
    [:body
     [:h1 "Hello"]
     [:table
