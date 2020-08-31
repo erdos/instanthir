@@ -35,13 +35,22 @@
            ">"
            (render-html (nnext elem))
            "</" (name (first elem)) ">")
-      (str "<" (name (first elem)) ">" (render-html (next elem)) "</" (name (first elem)) ">"))
+      (str "<" (name (first elem))
+           (if (next elem)
+             (str ">" (render-html (next elem)) "</" (name (first elem)) ">")
+             (str "/>")
+             )))
 
     (sequential? elem)
     (apply str (map render-html elem))
 
     :else
     (str elem)))
+
+
+(defmacro defsynonyms [& words])
+
+(defsynonyms "COVID-19" "covid-19" "koronavírus")
 
 (defn template [items]
   [:html
@@ -50,10 +59,11 @@
     [:table
      (for [item items]
        [:tr
-        [:td [:a {:href (:link item)}
-              (:title item)]
+        [:td
+         [:a {:href (:link item)} (:title item)]
+         [:br]
          (for [tag (:tags item)]
-           [:span {:style "background: silver; margin: 4px; border-radius: 4px"} (str tag)])]
+           [:i (str tag) ", "] )]
         ]
        )]
     ]])
