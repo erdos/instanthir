@@ -33,7 +33,11 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
           mkdir docs
-          echo "hello" > docs/index.html
+          echo "hello!!" > docs/index.html
+      - name: Execute babashka script
+        uses: tzafrirben/babashka-docker-action@v1
+        with:
+          bb_src: generate.clj
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
