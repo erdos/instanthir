@@ -68,6 +68,7 @@
        )]
     ]])
 
+
 (->> ["https://24.hu/feed/"
       "https://444.hu/feed/"
       "https://hvg.hu/rss"
@@ -82,4 +83,4 @@
      (flatten)
      (template)
      (render-html)
-     (spit "docs/index.html"))
+     (spit (doto "docs/index.html" io/make-parents)))
