@@ -58,6 +58,7 @@
   [:html
    [:head
     [:title "hirek."]
+    [:meta {:name "viewport" :content "width=device-width, initial-scale=1.0"}]
     [:style "i {font-size: 0.9em; color: #222}"]]
    [:body
     [:h1 "Hello"]
