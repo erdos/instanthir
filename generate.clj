@@ -28,7 +28,14 @@
 (defn render-html [elem]
   (cond
     (vector? elem)
-    (str "<" (name (first elem)) ">" (apply str (map render-html (next elem))) "</" (name (first elem)) ">")
+    (if (map? (second elem))
+      (str "<" (name (first elem))
+           (apply str (for [[k v] (second elem)]
+                        (str \space (name k) \= \" (str v) \")))
+           ">"
+           (render-html (nnext elem))
+           "</" (name (first elem)) ">")
+      (str "<" (name (first elem)) ">" (render-html (next elem)) "</" (name (first elem)) ">"))
 
     (sequential? elem)
     (apply str (map render-html elem))
