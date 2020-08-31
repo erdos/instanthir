@@ -62,7 +62,8 @@
       "https://www.valaszonline.hu/feed/"
       "https://hang.hu/feed/"
       "https://kolozsvaros.com/feed/"]
-     (mapcat fetch-items)
+     (pmap fetch-items)
+     (flatten)
      (template)
      (render-html)
      (spit "docs/index.html"))
