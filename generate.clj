@@ -56,14 +56,13 @@
        )]
     ]])
 
-
-
-(->
- (concat
-  (fetch-items "https://24.hu/feed/")
-  (fetch-items "https://444.hu/feed/")
-  (fetch-items "https://hvg.hu/rss"))
- (template)
- (render-html)
- (->> (spit "docs/index.html"))
- )
+(->> ["https://24.hu/feed/"
+      "https://444.hu/feed/"
+      "https://hvg.hu/rss"
+      "https://www.valaszonline.hu/feed/"
+      "https://hang.hu/feed/"
+      "https://kolozsvaros.com/feed/"]
+     (mapcat fetch-items)
+     (template)
+     (render-html)
+     (spit "docs/index.html"))
