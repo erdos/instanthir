@@ -69,7 +69,7 @@
    [:body
     [:h1 "Hello"]
     [:table
-     (for [item (rseq (vec (sort-by :published items)))]
+     (for [item (reverse (sort-by :published items))]
        [:tr
         [:td
          [:a {:href (:link item)} (:title item)]
