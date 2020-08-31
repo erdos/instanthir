@@ -5,6 +5,8 @@
 
 (def tag-blacklist #{"_444_adomany"})
 
+(def time-format (java.time.format.DateTimeFormatter/RFC_1123_DATE_TIME))
+
 (defn rss-item [item]
   (let [title (some #(when (= :title (:tag %)) (first (:content %)))
                     (:content item))
@@ -14,6 +16,10 @@
                           (:content item))]
     {:title title
      :link url
+     :published (some-> item :content
+                         (->> (some #(when (= :pubDate (:tag %)) (first (:content %)))))
+                         (java.time.ZonedDateTime/parse time-format)
+                         )
      :tags (vec (remove tag-blacklist categories))}))
 
 (defn fetch-items [url]
@@ -63,11 +69,12 @@
    [:body
     [:h1 "Hello"]
     [:table
-     (for [item items]
+     (for [item (rseq (vec (sort-by :published items)))]
        [:tr
         [:td
          [:a {:href (:link item)} (:title item)]
          [:br]
+         (some->> item :published str (vector :b))
          (for [tag (:tags item)]
            [:i (str tag) ", "] )]
         ]
