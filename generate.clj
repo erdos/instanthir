@@ -11,7 +11,7 @@
         categories (keep #(when (= :category (:tag %)) (first (:content %)))
                           (:content item))]
     {:title title
-     :url url
+     :link url
      :tags (vec categories)}))
 
 (defn fetch-items [url]
@@ -50,7 +50,8 @@
     [:table
      (for [item items]
        [:tr
-        [:td (:title item)]
+        [:td [:a {:href (:link item)}
+              (:title item)]]
         ]
        )]
     ]])
