@@ -6,7 +6,10 @@
 (def tag-blacklist #{"_444_adomany"})
 
 (defn parse-time [s]
-  (some-> s (java.time.ZonedDateTime/parse java.time.format.DateTimeFormatter/RFC_1123_DATE_TIME)))
+  (some-> s
+          (java.time.ZonedDateTime/parse java.time.format.DateTimeFormatter/RFC_1123_DATE_TIME)
+          (.withZoneSameInstant (java.time.ZoneId/of "Europe/Budapest"))
+          ))
 
 (defn rss-item [item]
   (let [title (some #(when (= :title (:tag %)) (first (:content %)))
@@ -75,11 +78,11 @@
          [:a {:href (:link item)} (:title item)]
          [:br]
          (when-let [t (:published item)]
-           [:span (-> (java.time.format.DateTimeFormatter/ofPattern "HH.mm") (.format t))])
+           [:span (-> (java.time.format.DateTimeFormatter/ofPattern "HH:mm") (.format t))])
          (for [tag (:tags item)]
-           [:i (str tag) ", "] )]
-        ]
-       )]
+           [:i ", " (str tag)])]
+        ])]
+    [:div "-"] ;; footer
     ]])
 
 
