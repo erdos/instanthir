@@ -93,6 +93,8 @@
      "label.cat input:checked + div {background:#ad4}"
      "label.cat input + div::before {content:'❌ '}"
      "label.cat input:checked + div::before {content:'✓ '}"
+     "table {border-collapse: collapse}"
+     "tbody {border-top: 2px dashed silver}"
      ".hide {display:none}"
      ]]
    [:script
@@ -114,7 +116,10 @@
        ]
       )
     [:table
-     (for [item (reverse (sort-by :published items))]
+     (for [group (partition-by #(->> % :published (.format (java.time.format.DateTimeFormatter/ofPattern "MM-dd")))
+                        (reverse (sort-by :published items)))]
+       [:tbody
+       (for [item group]
        [:tr
         [:td
          (if (:super-tags item)
@@ -122,7 +127,7 @@
            {})
          [:a {:href (:link item)} (:title item)]
          [:br]
-         (when-let [t (:published item)]
+         (let [t (:published item)]
            [:span (-> (java.time.format.DateTimeFormatter/ofPattern "HH:mm") (.format t))])
          [:i
           (for [tag (:tags item)]
@@ -132,17 +137,23 @@
                          :let [[tag-name] (synonyms tag)]]
                      (str ", " tag-name)
                      )]]
-           )]])]
+           )]]) ]
+           
+           )]
     [:div "-"] ;; footer
     ]])
 
 
 (->> ["https://24.hu/feed/"
       "https://444.hu/feed/"
+      "https://g7.hu/feed/"
       "https://hvg.hu/rss"
+      "https://atlatszo.hu/feed"
       "https://www.valaszonline.hu/feed/"
       "https://hang.hu/feed/"
       "https://kolozsvaros.com/feed/"
+      "https://www.szabadeuropa.hu/api/zipymtejjymr" ; napirenden
+      "https://www.szabadeuropa.hu/api/zppymqe-jymq" ; aktualis
       "https://www.napi.hu/feed/mindencikk.xml"
       "https://www.portfolio.hu/rss/all.xml"
       "https://magyarnarancs.hu/rss/"
